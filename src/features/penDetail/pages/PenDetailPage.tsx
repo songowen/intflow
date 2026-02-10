@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { Activity, Clock } from 'lucide-react';
 import { getToken } from '../../auth/auth';
 import { requestWithRetry, coerceArray, coerceNumber } from '../../../shared/api/http';
 import { createResilientWs } from '../../../shared/ws/resilientWs';
@@ -29,6 +30,28 @@ function coerceTimeSeries(data: unknown): Point[] {
   if (!resp) return [];
   return coerceArray(resp.time_series).map(
     (p, i) => coercePoint(p as Record<string, unknown>, i + 1),
+  );
+}
+
+/** 차트 섹션 헤더: 아이콘 배지 + 제목 */
+function ChartHeader({ icon: Icon, title, color }: { icon: typeof Activity; title: string; color: string }) {
+  return (
+    <h2 style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <span
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 32,
+          height: 32,
+          borderRadius: '50%',
+          backgroundColor: '#e0edff',
+        }}
+      >
+        <Icon size={18} color={color} />
+      </span>
+      {title}
+    </h2>
   );
 }
 
@@ -76,7 +99,7 @@ export default function PenDetailPage() {
     <div>
       <h1>{t('penDetail.title')}</h1>
 
-      <h2>{t('penDetail.activityChart')}</h2>
+      <ChartHeader icon={Activity} title={t('penDetail.activityChart')} color="#8884d8" />
       <ResponsiveContainer width="100%" height={250}>
         <LineChart data={series}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -87,7 +110,7 @@ export default function PenDetailPage() {
         </LineChart>
       </ResponsiveContainer>
 
-      <h2>{t('penDetail.feedingChart')}</h2>
+      <ChartHeader icon={Clock} title={t('penDetail.feedingChart')} color="#82ca9d" />
       <ResponsiveContainer width="100%" height={250}>
         <LineChart data={series}>
           <CartesianGrid strokeDasharray="3 3" />

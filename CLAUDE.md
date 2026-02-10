@@ -20,6 +20,7 @@
 - 새 라이브러리 추가 금지(명시 요구가 없는 한).
 - 허용: react-router-dom, i18next, react-i18next, recharts
 - 가능하면 native fetch + 최소 유틸 사용.
+- Exception: lucide-react (icons) is allowed.
 
 ## Architecture boundaries (MUST)
 - HTTP 방어 로직은 오직 여기만:

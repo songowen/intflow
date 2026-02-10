@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { PiggyBank, Activity, Clock, Thermometer, AlertTriangle } from 'lucide-react';
 import { getToken } from '../../auth/auth';
 import { requestWithRetry, coerceArray, coerceNumber, coerceString } from '../../../shared/api/http';
 import { createResilientWs } from '../../../shared/ws/resilientWs';
+import MetricPill from '../../../shared/ui/MetricPill';
 
 const API = import.meta.env.VITE_API_BASE_URL;
 const WS = import.meta.env.VITE_WS_BASE_URL;
@@ -71,11 +73,64 @@ function coercePiggeries(data: unknown): Piggery[] {
   });
 }
 
+/* ── 스타일 ── */
+
+const pillBase: CSSProperties = {
+  padding: '6px 18px',
+  borderRadius: 9999,
+  border: 'none',
+  fontSize: 14,
+  fontWeight: 500,
+  cursor: 'pointer',
+  transition: 'background 0.15s, color 0.15s',
+};
+
+const pillActive: CSSProperties = {
+  ...pillBase,
+  background: '#3b82f6',
+  color: '#fff',
+};
+
+const pillInactive: CSSProperties = {
+  ...pillBase,
+  background: '#f1f5f9',
+  color: '#475569',
+};
+
+const card: CSSProperties = {
+  background: '#fff',
+  borderRadius: 14,
+  boxShadow: '0 1px 4px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04)',
+  padding: 20,
+  width: 260,
+  cursor: 'pointer',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 10,
+  transition: 'box-shadow 0.15s',
+};
+
+const divider: CSSProperties = {
+  height: 1,
+  background: '#f1f5f9',
+  margin: '4px 0',
+};
+
+const abnormalRow: CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+  fontSize: 12,
+  color: '#64748b',
+  padding: '4px 0',
+};
+
 export default function DashboardPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [piggeries, setPiggeries] = useState<Piggery[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<string | null>(null);
 
   useEffect(() => {
     const token = getToken();
@@ -84,13 +139,24 @@ export default function DashboardPage() {
     requestWithRetry<PenListResponse>(`${API}/pens`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then((data) => setPiggeries(coercePiggeries(data)))
+      .then((data) => {
+        const parsed = coercePiggeries(data);
+        setPiggeries(parsed);
+        if (parsed.length > 0 && !activeTab) setActiveTab(parsed[0].piggery_id);
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
 
     const handle = createResilientWs({
       url: `${WS}/ws/pens?token=${token}`,
-      onMessage: (data) => setPiggeries(coercePiggeries(data)),
+      onMessage: (data) => {
+        const parsed = coercePiggeries(data);
+        setPiggeries(parsed);
+        setActiveTab((prev) => {
+          if (prev && parsed.some((p) => p.piggery_id === prev)) return prev;
+          return parsed[0]?.piggery_id ?? null;
+        });
+      },
     });
 
     return () => handle.close();
@@ -98,40 +164,82 @@ export default function DashboardPage() {
 
   if (loading) return <p>{t('dashboard.loading')}</p>;
 
+  const current = piggeries.find((pg) => pg.piggery_id === activeTab);
+
   return (
     <div>
       <h1>{t('dashboard.title')}</h1>
-      {piggeries.map((pg) => (
-        <section key={pg.piggery_id} style={{ marginBottom: 24 }}>
-          <h2>{pg.piggery_name} ({t('dashboard.totalPigs')}: {pg.total_pigs})</h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-            {pg.pens.map((pen) => (
-              <div
-                key={pen.pen_id}
-                onClick={() => navigate(`/pens/${penIdToParam(pen.pen_id)}`)}
-                style={{
-                  border: '1px solid #ccc',
-                  borderRadius: 8,
-                  padding: 12,
-                  width: 200,
-                  cursor: 'pointer',
-                }}
-              >
-                <strong>{pen.pen_name}</strong>
-                <p>{t('dashboard.stock')}: {pen.current_pig_count}</p>
-                <p>{t('dashboard.activity')}: {pen.avg_activity_level.toFixed(1)}</p>
-                <p>{t('dashboard.feedingTime')}: {pen.avg_feeding_time_minutes.toFixed(1)}</p>
-                <p>{t('dashboard.temperature')}: {pen.avg_temperature_celsius.toFixed(1)}°C</p>
-                {pen.abnormal_pigs.length > 0 && (
-                  <p style={{ color: 'red' }}>
-                    {t('dashboard.abnormal')}: {pen.abnormal_pigs.length}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-      ))}
+
+      {/* 탭 pill */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
+        {piggeries.map((pg) => (
+          <button
+            key={pg.piggery_id}
+            onClick={() => setActiveTab(pg.piggery_id)}
+            style={pg.piggery_id === activeTab ? pillActive : pillInactive}
+          >
+            {pg.piggery_name}
+            <span style={{ marginLeft: 6, opacity: 0.7, fontSize: 12 }}>
+              {pg.total_pigs} {t('dashboard.totalPigs')}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* 카드 그리드 */}
+      {current && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+          {current.pens.map((pen) => (
+            <div
+              key={pen.pen_id}
+              onClick={() => navigate(`/pens/${penIdToParam(pen.pen_id)}`)}
+              style={card}
+              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.10)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04)'; }}
+            >
+              <strong style={{ fontSize: 16 }}>{pen.pen_name}</strong>
+
+              <div style={divider} />
+
+              <MetricPill icon={PiggyBank} label={t('dashboard.stock')} value={pen.current_pig_count} />
+              <MetricPill icon={Activity} label={t('dashboard.activity')} value={pen.avg_activity_level.toFixed(1)} />
+              <MetricPill icon={Clock} label={t('dashboard.feedingTime')} value={pen.avg_feeding_time_minutes.toFixed(1)} />
+              <MetricPill icon={Thermometer} label={t('dashboard.temperature')} value={`${pen.avg_temperature_celsius.toFixed(1)}°C`} />
+
+              {pen.abnormal_pigs.length > 0 && (
+                <>
+                  <div style={divider} />
+                  <MetricPill
+                    icon={AlertTriangle}
+                    label={t('dashboard.abnormal')}
+                    value={pen.abnormal_pigs.length}
+                    valueColor="#ef4444"
+                  />
+                  <div
+                    style={{
+                      background: '#fef2f2',
+                      borderRadius: 8,
+                      padding: '6px 10px',
+                    }}
+                  >
+                    {pen.abnormal_pigs.map((pig, i) => (
+                      <div key={pig.wid ?? i} style={abnormalRow}>
+                        <span style={{ fontWeight: 600, color: '#ef4444', minWidth: 44 }}>
+                          #{pig.wid}
+                        </span>
+                        <Activity size={12} />
+                        <span>{pig.activity}</span>
+                        <Clock size={12} style={{ marginLeft: 4 }} />
+                        <span>{pig.feeding_time}{t('dashboard.feedingUnit')}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,7 +1,8 @@
 {
   "common": {
     "langToggle": "EN",
-    "logout": "로그아웃"
+    "logout": "로그아웃",
+    "headerTitle": "스마트 농장 관제"
   },
   "login": {
     "title": "로그인",
@@ -19,7 +20,8 @@
     "activity": "활동량",
     "feedingTime": "급이시간",
     "temperature": "온도",
-    "abnormal": "이상 개체"
+    "abnormal": "이상 개체",
+    "feedingUnit": "분"
   },
   "penDetail": {
     "title": "돈사 상세",

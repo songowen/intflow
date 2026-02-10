@@ -1,7 +1,8 @@
 {
   "common": {
     "langToggle": "KO",
-    "logout": "Logout"
+    "logout": "Logout",
+    "headerTitle": "Smart Farm Monitor"
   },
   "login": {
     "title": "Login",
@@ -19,7 +20,8 @@
     "activity": "Activity",
     "feedingTime": "Feeding time",
     "temperature": "Temp",
-    "abnormal": "Abnormal"
+    "abnormal": "Abnormal",
+    "feedingUnit": "min"
   },
   "penDetail": {
     "title": "Pen Detail",
