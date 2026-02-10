@@ -1,0 +1,30 @@
+{
+  "common": {
+    "langToggle": "KO",
+    "logout": "Logout"
+  },
+  "login": {
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Sign in",
+    "loading": "Signing in…",
+    "error": "Login failed. Please try again."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "loading": "Loading…",
+    "totalPigs": "Total pigs",
+    "stock": "Stock",
+    "activity": "Activity",
+    "feedingTime": "Feeding time",
+    "temperature": "Temp",
+    "abnormal": "Abnormal"
+  },
+  "penDetail": {
+    "title": "Pen Detail",
+    "loading": "Loading…",
+    "activityChart": "Activity Trend",
+    "feedingChart": "Feeding Time Trend"
+  }
+}
