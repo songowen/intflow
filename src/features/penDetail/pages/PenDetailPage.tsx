@@ -28,7 +28,7 @@ function coerceTimeSeries(data: unknown): Point[] {
   const resp = data as Record<string, unknown> | null;
   if (!resp) return [];
   return coerceArray(resp.time_series).map(
-    (p: Record<string, unknown>, i: number) => coercePoint(p, i + 1),
+    (p, i) => coercePoint(p as Record<string, unknown>, i + 1),
   );
 }
 
@@ -59,7 +59,9 @@ export default function PenDetailPage() {
       onMessage: (data) => {
         const raw = data as Record<string, unknown> | null;
         if (!raw) return;
-        const pt = coercePoint(raw as Record<string, unknown>, ++counterRef.current);
+        // WS 메시지 구조: { pen_id, timestamp, data: { activity, feeding_time } }
+        const inner = (raw.data ?? raw) as Record<string, unknown>;
+        const pt = coercePoint(inner, ++counterRef.current);
         // 최대 10개 유지: 오래된 것 제거 후 새 포인트 추가
         setSeries((prev) => [...prev.slice(-(MAX_POINTS - 1)), pt]);
       },
