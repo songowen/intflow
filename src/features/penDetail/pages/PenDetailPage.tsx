@@ -6,6 +6,7 @@ import { Activity, Clock } from 'lucide-react';
 import { getToken } from '../../auth/auth';
 import { requestWithRetry, coerceArray, coerceNumber } from '../../../shared/api/http';
 import { createResilientWs } from '../../../shared/ws/resilientWs';
+import Skeleton from '../../../shared/ui/Skeleton';
 
 const API = import.meta.env.VITE_API_BASE_URL;
 const WS = import.meta.env.VITE_WS_BASE_URL;
@@ -93,10 +94,23 @@ export default function PenDetailPage() {
     return () => handle.close();
   }, [penId]);
 
-  if (loading) return <p>{t('penDetail.loading')}</p>;
+  if (loading) {
+    return (
+      <div style={{ padding: '24px 32px' }}>
+        <Skeleton width={180} height={24} style={{ marginBottom: 24 }} />
+        {/* 차트 스켈레톤 ×2 */}
+        {[0, 1].map((i) => (
+          <div key={i} style={{ marginBottom: 32 }}>
+            <Skeleton width={160} height={20} style={{ marginBottom: 12 }} />
+            <Skeleton height={250} borderRadius={12} />
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
-    <div>
+    <div style={{ padding: '24px 32px' }}>
       <h1>{t('penDetail.title')}</h1>
 
       <ChartHeader icon={Activity} title={t('penDetail.activityChart')} color="#8884d8" />

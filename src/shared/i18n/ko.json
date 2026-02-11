@@ -2,12 +2,15 @@
   "common": {
     "langToggle": "EN",
     "logout": "로그아웃",
-    "headerTitle": "스마트 농장 관제"
+    "headerTitle": "스마트 농장 관제 대시보드"
   },
   "login": {
     "title": "로그인",
-    "username": "아이디",
+    "subtitle": "계정 정보를 입력해 주세요",
+    "username": "이메일",
+    "usernamePlaceholder": "이메일을 입력하세요",
     "password": "비밀번호",
+    "passwordPlaceholder": "비밀번호를 입력하세요",
     "submit": "로그인",
     "loading": "로그인 중…",
     "error": "로그인에 실패했습니다. 다시 시도해주세요."

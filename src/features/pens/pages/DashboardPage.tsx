@@ -10,6 +10,7 @@ import { getToken } from '../../auth/auth';
 import { requestWithRetry, coerceArray, coerceNumber, coerceString } from '../../../shared/api/http';
 import { createResilientWs } from '../../../shared/ws/resilientWs';
 import MetricPill from '../../../shared/ui/MetricPill';
+import Skeleton from '../../../shared/ui/Skeleton';
 
 const API = import.meta.env.VITE_API_BASE_URL;
 const WS = import.meta.env.VITE_WS_BASE_URL;
@@ -165,12 +166,37 @@ export default function DashboardPage() {
     return () => handle.close();
   }, []);
 
-  if (loading) return <p>{t('dashboard.loading')}</p>;
+  if (loading) {
+    return (
+      <div style={{ padding: '24px 32px' }}>
+        {/* 탭 스켈레톤 */}
+        <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+          <Skeleton width={90} height={38} borderRadius={9999} />
+          <Skeleton width={90} height={38} borderRadius={9999} />
+        </div>
+        {/* 행 스켈레톤 */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} style={{ ...row, justifyContent: 'space-between' }}>
+              <Skeleton width={120} height={18} />
+              <div style={{ display: 'flex', gap: 24 }}>
+                <Skeleton width={80} height={14} />
+                <Skeleton width={80} height={14} />
+                <Skeleton width={80} height={14} />
+                <Skeleton width={80} height={14} />
+              </div>
+              <Skeleton width={36} height={36} borderRadius={8} />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   const current = piggeries.find((pg) => pg.piggery_id === activeTab);
 
   return (
-    <div>
+    <div style={{ padding: '24px 32px' }}>
       {/* 탭 pill */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
         {piggeries.map((pg) => (
