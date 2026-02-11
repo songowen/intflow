@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Home, Globe, LogOut } from 'lucide-react';
 import { isAuthenticated, logout } from '../features/auth/auth';
@@ -71,11 +71,11 @@ export default function Layout() {
           </select>
         </div>
 
-        {/* 중: 타이틀 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 16, letterSpacing: 0.3 }}>
+        {/* 중: 타이틀 (홈 링크) */}
+        <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 16, letterSpacing: 0.3, color: 'inherit' }}>
           <Home size={20} />
           {t('common.headerTitle')}
-        </div>
+        </Link>
 
         {/* 우: 로그아웃 */}
         <div style={{ minWidth: 100, display: 'flex', justifyContent: 'flex-end' }}>

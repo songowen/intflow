@@ -7,13 +7,15 @@ import DashboardPage from '../features/pens/pages/DashboardPage';
 import PenDetailPage from '../features/penDetail/pages/PenDetailPage';
 
 const router = createBrowserRouter([
+  /* 로그인: Layout 없이 렌더 */
+  {
+    element: <GuestGuard />,
+    children: [{ path: '/login', element: <LoginPage /> }],
+  },
+  /* 인증 필요 페이지: Layout + AuthGuard */
   {
     element: <Layout />,
     children: [
-      {
-        element: <GuestGuard />,
-        children: [{ path: '/login', element: <LoginPage /> }],
-      },
       {
         element: <AuthGuard />,
         children: [
