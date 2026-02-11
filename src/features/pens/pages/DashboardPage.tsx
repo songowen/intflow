@@ -10,7 +10,9 @@ import { getToken } from '../../auth/auth';
 import { requestWithRetry, coerceArray, coerceNumber, coerceString } from '../../../shared/api/http';
 import { createResilientWs } from '../../../shared/ws/resilientWs';
 import MetricPill from '../../../shared/ui/MetricPill';
-import { API_BASE as API, WS_BASE as WS } from '../../../shared/config';
+
+const API = import.meta.env.VITE_API_BASE_URL;
+const WS = import.meta.env.VITE_WS_BASE_URL;
 
 interface AbnormalPig {
   wid: number;

@@ -6,7 +6,9 @@ import { Activity, Clock } from 'lucide-react';
 import { getToken } from '../../auth/auth';
 import { requestWithRetry, coerceArray, coerceNumber } from '../../../shared/api/http';
 import { createResilientWs } from '../../../shared/ws/resilientWs';
-import { API_BASE as API, WS_BASE as WS } from '../../../shared/config';
+
+const API = import.meta.env.VITE_API_BASE_URL;
+const WS = import.meta.env.VITE_WS_BASE_URL;
 const MAX_POINTS = 10;
 
 interface Point {

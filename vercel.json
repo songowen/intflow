@@ -1,7 +1,0 @@
-{
-  "rewrites": [
-    { "source": "/api/:path*", "destination": "http://intflowserver2.iptime.org:60535/:path*" },
-    { "source": "/ws/:path*", "destination": "ws://intflowserver2.iptime.org:60535/ws/:path*" },
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
-}
