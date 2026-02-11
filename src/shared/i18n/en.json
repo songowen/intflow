@@ -21,7 +21,10 @@
     "feedingTime": "Feeding time",
     "temperature": "Temp",
     "abnormal": "Abnormal",
-    "feedingUnit": "min"
+    "feedingUnit": "min",
+    "countUnit": " pigs",
+    "noDevice": "No device",
+    "abnormalList": "Abnormal pigs"
   },
   "penDetail": {
     "title": "Pen Detail",

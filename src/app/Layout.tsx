@@ -31,14 +31,14 @@ export default function Layout() {
   };
 
   return (
-    <div>
+    <div style={{ minHeight: '100vh', background: '#eef2f7' }}>
       <header
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           height: 56,
-          padding: '0 24px',
+          padding: '0 32px',
           background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
           color: '#fff',
         }}
@@ -66,7 +66,7 @@ export default function Layout() {
         </div>
 
         {/* 중: 타이틀 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 16 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 16, letterSpacing: 0.3 }}>
           <Home size={20} />
           {t('common.headerTitle')}
         </div>
@@ -93,7 +93,7 @@ export default function Layout() {
         </div>
       </header>
 
-      <main style={{ padding: '16px 24px' }}>
+      <main style={{ padding: '24px 32px', maxWidth: 1280, margin: '0 auto' }}>
         <Outlet />
       </main>
     </div>

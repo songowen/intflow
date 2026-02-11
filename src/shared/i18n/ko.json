@@ -21,7 +21,10 @@
     "feedingTime": "급이시간",
     "temperature": "온도",
     "abnormal": "이상 개체",
-    "feedingUnit": "분"
+    "feedingUnit": "분",
+    "countUnit": "두",
+    "noDevice": "장치 없음",
+    "abnormalList": "이상 개체 목록"
   },
   "penDetail": {
     "title": "돈사 상세",
