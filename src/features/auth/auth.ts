@@ -1,4 +1,4 @@
-const API = import.meta.env.VITE_API_BASE_URL;
+import { API_BASE as API } from '../../shared/config';
 
 export function isAuthenticated(): boolean {
   const token = localStorage.getItem('access_token');
