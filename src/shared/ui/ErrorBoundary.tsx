@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
+import i18n from '../i18n/i18n';
 
 interface Props { children: ReactNode }
 interface State { hasError: boolean }
@@ -24,10 +25,10 @@ export default class ErrorBoundary extends Component<Props, State> {
       }}>
         <div>
           <p style={{ fontSize: 18, fontWeight: 600, marginBottom: 12, color: '#1e293b' }}>
-            문제가 발생했습니다
+            {i18n.t('common.errorTitle')}
           </p>
           <p style={{ fontSize: 14, color: '#64748b', marginBottom: 24 }}>
-            예상치 못한 오류가 발생했습니다. 페이지를 새로고침해 주세요.
+            {i18n.t('common.errorMessage')}
           </p>
           <button
             onClick={() => window.location.reload()}
@@ -37,7 +38,7 @@ export default class ErrorBoundary extends Component<Props, State> {
               fontWeight: 600, cursor: 'pointer',
             }}
           >
-            새로고침
+            {i18n.t('common.reload')}
           </button>
         </div>
       </div>

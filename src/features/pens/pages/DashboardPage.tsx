@@ -169,6 +169,14 @@ export default function DashboardPage() {
 
   const current = piggeries.find((pg) => pg.piggery_id === activeTab);
 
+  if (piggeries.length === 0) {
+    return (
+      <div style={{ padding: '60px 0', textAlign: 'center', color: '#94a3b8' }}>
+        <p style={{ fontSize: 16 }}>{t('dashboard.empty')}</p>
+      </div>
+    );
+  }
+
   return (
     <div style={{ padding: '16px 0' }}>
       {/* 탭 pill */}

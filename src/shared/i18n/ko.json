@@ -2,7 +2,10 @@
   "common": {
     "langToggle": "EN",
     "logout": "로그아웃",
-    "headerTitle": "스마트 농장 관제 대시보드"
+    "headerTitle": "스마트 농장 관제 대시보드",
+    "errorTitle": "문제가 발생했습니다",
+    "errorMessage": "예상치 못한 오류가 발생했습니다. 페이지를 새로고침해 주세요.",
+    "reload": "새로고침"
   },
   "login": {
     "title": "로그인",
@@ -28,12 +31,14 @@
     "countUnit": "두",
     "noDevice": "장치 없음",
     "abnormalList": "이상 개체 목록",
-    "pigDetail": "개체 상세"
+    "pigDetail": "개체 상세",
+    "empty": "등록된 돈사가 없습니다."
   },
   "penDetail": {
     "title": "돈사 상세",
     "loading": "로딩 중…",
     "activityChart": "활동량 추이",
-    "feedingChart": "급이시간 추이"
+    "feedingChart": "급이시간 추이",
+    "empty": "아직 수집된 데이터가 없습니다."
   }
 }

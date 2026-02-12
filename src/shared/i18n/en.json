@@ -2,7 +2,10 @@
   "common": {
     "langToggle": "KO",
     "logout": "Logout",
-    "headerTitle": "Smart Farm Monitor Dashboard"
+    "headerTitle": "Smart Farm Monitor Dashboard",
+    "errorTitle": "Something went wrong",
+    "errorMessage": "An unexpected error occurred. Please reload the page.",
+    "reload": "Reload"
   },
   "login": {
     "title": "Login",
@@ -28,12 +31,14 @@
     "countUnit": " pigs",
     "noDevice": "No device",
     "abnormalList": "Abnormal pigs",
-    "pigDetail": "Pig Detail"
+    "pigDetail": "Pig Detail",
+    "empty": "No piggeries registered."
   },
   "penDetail": {
     "title": "Pen Detail",
     "loading": "Loading…",
     "activityChart": "Activity Trend",
-    "feedingChart": "Feeding Time Trend"
+    "feedingChart": "Feeding Time Trend",
+    "empty": "No data collected yet."
   }
 }
