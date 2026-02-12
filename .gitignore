@@ -28,3 +28,6 @@ dist-ssr
 .env.*
 !.env.example
 
+# 내부 문서 (제출 제외)
+docs/
+
