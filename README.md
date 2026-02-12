@@ -8,6 +8,7 @@ React + TypeScript + Vite 기반의 실시간 돈사 모니터링 대시보드�
 npm install
 npm run dev      # http://localhost:5173
 npm run build    # 프로덕션 빌드
+npm run test:e2e # E2E 테스트 (Playwright)
 ```
 
 ## 환경변수 (.env)
