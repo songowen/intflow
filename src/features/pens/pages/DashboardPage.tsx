@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   PiggyBank, Activity, Clock, Thermometer,
-  ChevronDown, ChevronRight, ClipboardList, Search,
+  ChevronDown, ChevronRight, ClipboardList, Search, X,
 } from 'lucide-react';
 import { getToken } from '../../auth/auth';
 import { requestWithRetry, coerceArray, coerceNumber, coerceString } from '../../../shared/api/http';
@@ -135,6 +135,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const [expandedPen, setExpandedPen] = useState<string | null>(null);
+  const [selectedPig, setSelectedPig] = useState<AbnormalPig | null>(null);
 
   useEffect(() => {
     const token = getToken();
@@ -168,7 +169,7 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div style={{ padding: '24px 32px' }}>
+      <div style={{ padding: '16px 0' }}>
         {/* 탭 스켈레톤 */}
         <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
           <Skeleton width={90} height={38} borderRadius={9999} />
@@ -196,7 +197,7 @@ export default function DashboardPage() {
   const current = piggeries.find((pg) => pg.piggery_id === activeTab);
 
   return (
-    <div style={{ padding: '24px 32px' }}>
+    <div style={{ padding: '16px 0' }}>
       {/* 탭 pill */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
         {piggeries.map((pg) => (
@@ -322,7 +323,12 @@ export default function DashboardPage() {
                             <span>{pig.feeding_time}{t('dashboard.feedingUnit')}</span>
                           </div>
 
-                          <Search size={16} color="#94a3b8" style={{ flexShrink: 0, cursor: 'pointer' }} />
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setSelectedPig(pig); }}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0, display: 'flex', padding: 4 }}
+                          >
+                            <Search size={16} color="#94a3b8" />
+                          </button>
                         </div>
                       ))}
                     </div>
@@ -331,6 +337,74 @@ export default function DashboardPage() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* 이상 개체 상세 모달 */}
+      {selectedPig && (
+        <div
+          style={{
+            position: 'fixed', inset: 0, zIndex: 100,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'rgba(0,0,0,0.45)',
+            backdropFilter: 'blur(4px)',
+          }}
+          onClick={() => setSelectedPig(null)}
+        >
+          <div
+            style={{
+              background: '#fff', borderRadius: 18, padding: 28,
+              width: '100%', maxWidth: 360,
+              boxShadow: '0 20px 60px rgba(0,0,0,0.18)',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 모달 헤더 */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+              <h3 style={{ fontSize: 17, fontWeight: 700, margin: 0 }}>{t('dashboard.pigDetail')}</h3>
+              <button
+                onClick={() => setSelectedPig(null)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', display: 'flex', padding: 0 }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* 썸네일 */}
+            {selectedPig.thumbnail_url ? (
+              <img
+                src={selectedPig.thumbnail_url}
+                alt={`#${selectedPig.wid}`}
+                style={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 12, marginBottom: 20 }}
+              />
+            ) : (
+              <div style={{ width: '100%', height: 200, borderRadius: 12, background: '#f1f5f9', marginBottom: 20 }} />
+            )}
+
+            {/* 개체 번호 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+              <span style={{ fontWeight: 700, fontSize: 20 }}>{selectedPig.wid}</span>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#ef4444' }} />
+            </div>
+
+            {/* 지표 카드 */}
+            <div style={{ display: 'flex', gap: 12 }}>
+              <div style={{ flex: 1, background: '#f8fafc', borderRadius: 10, padding: '12px 16px' }}>
+                <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 4 }}>{t('dashboard.activity')}</div>
+                <div style={{ fontSize: 18, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <Activity size={16} color="#3b82f6" />
+                  {selectedPig.activity}
+                </div>
+              </div>
+              <div style={{ flex: 1, background: '#f8fafc', borderRadius: 10, padding: '12px 16px' }}>
+                <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 4 }}>{t('dashboard.feedingTime')}</div>
+                <div style={{ fontSize: 18, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <Clock size={16} color="#3b82f6" />
+                  {selectedPig.feeding_time}{t('dashboard.feedingUnit')}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

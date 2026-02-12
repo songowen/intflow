@@ -35,17 +35,20 @@ export default function Layout() {
       <header
         style={{
           position: 'sticky',
-          top: 0,
+          top: 12,
           zIndex: 50,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          height: 56,
-          padding: '0 32px',
-          background: 'rgba(15, 23, 42, 0.45)',
-          backdropFilter: 'blur(14px)',
-          WebkitBackdropFilter: 'blur(14px)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          height: 52,
+          margin: '12px 16px 0',
+          padding: '0 24px',
+          borderRadius: 18,
+          background: 'rgba(15, 23, 42, 0.55)',
+          backdropFilter: 'blur(24px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+          border: '1px solid rgba(255,255,255,0.12)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
           color: '#fff',
         }}
       >
@@ -72,7 +75,7 @@ export default function Layout() {
         </div>
 
         {/* 중: 타이틀 (홈 링크) */}
-        <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 16, letterSpacing: 0.3, color: 'inherit' }}>
+        <Link to="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 600, fontSize: 16, letterSpacing: 0.3, color: 'inherit',textDecoration: 'none', }}>
           <Home size={20} />
           {t('common.headerTitle')}
         </Link>

@@ -6,12 +6,12 @@ import { login } from '../auth';
 
 /* ── 스타일 ── */
 
-const page: CSSProperties = {
-  minHeight: '100vh',
+const loginInner: CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  background: 'linear-gradient(135deg, #0f172a 0%, #1e40af 30%, #38bdf8 70%, #bae6fd 100%)',
+  width: '100%',
+  height: '100%',
   padding: 24,
 };
 
@@ -117,8 +117,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={page}>
-      <div style={card}>
+    <div className="login-bg">
+      <div style={loginInner}>
+        <div style={card}>
         {/* 로고 + 타이틀 */}
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <div style={{
@@ -191,10 +192,9 @@ export default function LoginPage() {
             {loading ? t('login.loading') : t('login.submit')}
           </button>
         </form>
+        </div>
       </div>
-
-      {/* 스피너 애니메이션 */}
-      <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
     </div>
   );
 }

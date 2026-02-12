@@ -27,7 +27,8 @@
     "feedingUnit": "분",
     "countUnit": "두",
     "noDevice": "장치 없음",
-    "abnormalList": "이상 개체 목록"
+    "abnormalList": "이상 개체 목록",
+    "pigDetail": "개체 상세"
   },
   "penDetail": {
     "title": "돈사 상세",

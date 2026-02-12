@@ -2,7 +2,7 @@
   "common": {
     "langToggle": "KO",
     "logout": "Logout",
-    "headerTitle": "Smart Farm Monitor"
+    "headerTitle": "Smart Farm Monitor Dashboard"
   },
   "login": {
     "title": "Login",
@@ -27,7 +27,8 @@
     "feedingUnit": "min",
     "countUnit": " pigs",
     "noDevice": "No device",
-    "abnormalList": "Abnormal pigs"
+    "abnormalList": "Abnormal pigs",
+    "pigDetail": "Pig Detail"
   },
   "penDetail": {
     "title": "Pen Detail",
