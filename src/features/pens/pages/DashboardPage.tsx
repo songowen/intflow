@@ -11,37 +11,10 @@ import { requestWithRetry, coerceArray, coerceNumber, coerceString } from '../..
 import { createResilientWs } from '../../../shared/ws/resilientWs';
 import MetricPill from '../../../shared/ui/MetricPill';
 import Skeleton from '../../../shared/ui/Skeleton';
+import type { AbnormalPig, Pen, Piggery, DashboardPensMessage } from '../../../shared/types/ws';
 
 const API = import.meta.env.VITE_API_BASE_URL;
 const WS = import.meta.env.VITE_WS_BASE_URL;
-
-interface AbnormalPig {
-  wid: number;
-  thumbnail_url?: string;
-  activity: number;
-  feeding_time: number;
-}
-
-interface Pen {
-  pen_id: string;
-  pen_name: string;
-  current_pig_count: number;
-  avg_activity_level: number;
-  avg_feeding_time_minutes: number;
-  avg_temperature_celsius: number;
-  abnormal_pigs: AbnormalPig[];
-}
-
-interface Piggery {
-  piggery_id: string;
-  piggery_name: string;
-  total_pigs: number;
-  pens: Pen[];
-}
-
-interface PenListResponse {
-  piggeies: Piggery[];
-}
 
 // pen_id에서 숫자 부분 추출 (예: "pen_3" → "3")
 function penIdToParam(penId: string): string {
@@ -141,7 +114,7 @@ export default function DashboardPage() {
     const token = getToken();
     if (!token) return;
 
-    requestWithRetry<PenListResponse>(`${API}/pens`, {
+    requestWithRetry<DashboardPensMessage>(`${API}/pens`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((data) => {

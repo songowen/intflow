@@ -7,6 +7,7 @@ import { getToken } from '../../auth/auth';
 import { requestWithRetry, coerceArray, coerceNumber } from '../../../shared/api/http';
 import { createResilientWs } from '../../../shared/ws/resilientWs';
 import Skeleton from '../../../shared/ui/Skeleton';
+import type { PenStreamMessage } from '../../../shared/types/ws';
 
 const API = import.meta.env.VITE_API_BASE_URL;
 const WS = import.meta.env.VITE_WS_BASE_URL;
@@ -81,10 +82,9 @@ export default function PenDetailPage() {
     const handle = createResilientWs({
       url: `${WS}/ws/pens/${penId}?token=${token}`,
       onMessage: (data) => {
-        const raw = data as Record<string, unknown> | null;
+        const raw = data as Partial<PenStreamMessage> | null;
         if (!raw) return;
-        // WS 메시지 구조: { pen_id, timestamp, data: { activity, feeding_time } }
-        const inner = (raw.data ?? raw) as Record<string, unknown>;
+        const inner = ((raw as Record<string, unknown>).data ?? raw) as Record<string, unknown>;
         const pt = coercePoint(inner, ++counterRef.current);
         // 최대 10개 유지: 오래된 것 제거 후 새 포인트 추가
         setSeries((prev) => [...prev.slice(-(MAX_POINTS - 1)), pt]);
