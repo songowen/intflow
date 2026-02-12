@@ -102,7 +102,7 @@ export default function Layout() {
         </div>
       </header>
 
-      <main>
+      <main style={{ padding: '0 16px' }}>
         <Outlet />
       </main>
     </div>

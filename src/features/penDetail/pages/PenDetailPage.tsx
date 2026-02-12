@@ -38,7 +38,7 @@ function coerceTimeSeries(data: unknown): Point[] {
 /** 차트 섹션 헤더: 아이콘 배지 + 제목 */
 function ChartHeader({ icon: Icon, title, color }: { icon: typeof Activity; title: string; color: string }) {
   return (
-    <h2 style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+    <h2 style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
       <span
         style={{
           display: 'inline-flex',
@@ -119,30 +119,34 @@ export default function PenDetailPage() {
   }
 
   return (
-    <div style={{ padding: '24px 32px' }}>
-      <h1>{t('penDetail.title')}</h1>
+    <div style={{ padding: '24px 32px 32px' }}>
+      <h1 style={{ marginBottom: 14 }}>{t('penDetail.title')}</h1>
 
       <ChartHeader icon={Activity} title={t('penDetail.activityChart')} color="#8884d8" />
-      <ResponsiveContainer width="100%" height={250}>
-        <LineChart data={series}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="index" />
-          <YAxis />
-          <Tooltip />
-          <Line type="monotone" dataKey="activity" stroke="#8884d8" dot={false} />
-        </LineChart>
-      </ResponsiveContainer>
+      <div style={{ marginBottom: 24 }}>
+        <ResponsiveContainer width="100%" height={250}>
+          <LineChart data={series}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="index" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="activity" stroke="#8884d8" dot={false} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
 
       <ChartHeader icon={Clock} title={t('penDetail.feedingChart')} color="#82ca9d" />
-      <ResponsiveContainer width="100%" height={250}>
-        <LineChart data={series}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="index" />
-          <YAxis />
-          <Tooltip />
-          <Line type="monotone" dataKey="feeding_time" stroke="#82ca9d" dot={false} />
-        </LineChart>
-      </ResponsiveContainer>
+      <div style={{ marginBottom: 16 }}>
+        <ResponsiveContainer width="100%" height={250}>
+          <LineChart data={series}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="index" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="feeding_time" stroke="#82ca9d" dot={false} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
